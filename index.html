@@ -12,7 +12,7 @@
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=EB+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="img/brightfeather.jpg">
+<link rel="preload" as="image" href="img/bf-paper.jpg"><link rel="preload" as="image" href="img/bf-front.webp"><link rel="preload" as="image" href="img/bf-wash.webp">
 <style>
 :root{--bg:#f6efdc;--ink:#1b2b4a;--acc:#1f4f9a;--soft:#5d6f8c;--panel:#1f4f9a;--btn:#f6efdc}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -27,7 +27,7 @@ nav.top a{color:var(--ink);text-decoration:none;font:600 .95rem 'EB Garamond',Ge
 .hero{position:relative;height:380vh}
 .stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--bg)}
 .bk{position:absolute;left:0;top:0;width:var(--bw);will-change:transform;transform-origin:50.0% 42.0%}
-.bk img{display:block;width:100%;height:auto;box-shadow:0 18px 40px rgba(0,0,0,.28)}
+.bk img{display:block;width:100%;height:auto;box-shadow:0 18px 40px rgba(0,0,0,.28)}.bk .wash,.bk .front{position:absolute;box-shadow:none}.bk .wash{left:21.864%;top:27.977%;width:59.148%;transform-origin:47.6% 36.1%;will-change:transform,opacity}.bk .front{left:2.6467%;top:2.5825%;width:94.937%}
 .copy{position:absolute;z-index:4;left:20px;right:20px;bottom:70px;text-align:center;opacity:0;will-change:opacity}
 .copy h1{font-size:clamp(2.4rem,11vw,4.4rem);color:var(--ink)}
 .copy .lab{font:600 1.15rem 'EB Garamond',Georgia,serif;margin:.5rem 0 1rem;color:var(--acc)}
@@ -59,7 +59,7 @@ footer{text-align:center;color:var(--soft);font-size:.9rem;padding:3rem 16px 6re
 <nav class="top" aria-label="Sections"><a href="#books">Books</a><a href="#about">Hannah</a><a href="#meet">Events</a></nav>
 <header class="hero">
   <div class="stage" id="stage">
-    <div class="bk" id="bk" role="img" aria-label="Brightfeather by Hannah Hounshell: golden antlers, a red rose and a green feather pendant over a blue watercolour wash and a city skyline, framed in vines"><img src="img/brightfeather.jpg" alt="" width="869" height="1394"></div>
+    <div class="bk" id="bk" role="img" aria-label="Brightfeather by Hannah Hounshell: golden antlers, a red rose and a green feather pendant over a blue watercolour wash and a city skyline, framed in vines"><img src="img/bf-paper.jpg" alt="" width="869" height="1394"><img class="wash" id="wash" src="img/bf-wash.webp" alt=""><img class="front" src="img/bf-front.webp" alt=""></div>
     <div class="copy" id="copy">
       <h1>Brightfeather</h1>
       <div class="lab">Everything has roots in reality. Even faerie tales.</div>
@@ -86,7 +86,7 @@ footer{text-align:center;color:var(--soft);font-size:.9rem;padding:3rem 16px 6re
 </main>
 <footer>A mockup made by Sparsh Saini for Hannah Hounshell. Not affiliated, not live.</footer>
 <script>
-(()=>{const hero=document.querySelector('.hero'),stage=document.getElementById('stage'),copy=document.getElementById('copy'),bk=document.getElementById('bk');
+(()=>{const hero=document.querySelector('.hero'),stage=document.getElementById('stage'),copy=document.getElementById('copy'),bk=document.getElementById('bk'),wash=document.getElementById('wash');
 if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
 let W,H,bw,bh,rx,ry,ht,tick=false;const cl=v=>Math.max(0,Math.min(1,v)),eio=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
 const R=0.6234,S0=2.3;
@@ -97,6 +97,9 @@ function draw(){tick=false;const p=cl((scrollY-hero.offsetTop)/ht);
  const fx=bw*0.5,fy=bh*0.42;
  const tx=(1-z)*(W/2-fx)+z*rx,ty=(1-z)*(H*.4-fy)+z*ry;
  bk.style.transform=`translate(${tx}px,${ty}px) scale(${s})`;
+ // the cover's watercolour drops in behind the rose and bleeds outward, sideways first, then down into the skyline
+ const b=cl((p-.06)/.6),bx=1-Math.pow(1-cl(b/.75),3),by=1-Math.pow(1-b,2.2);
+ wash.style.transform=`scale(${.06+.94*bx},${.04+.96*by})`;wash.style.opacity=cl(b*3.5).toFixed(3);
  const c=cl((p-.8)/.14);copy.style.opacity=c.toFixed(3);copy.style.transform=(W>=900?'translateY(-50%) ':'')+`translateY(${(1-c)*14}px)`}
 addEventListener('scroll',()=>{if(!tick){tick=true;requestAnimationFrame(draw)}},{passive:true});addEventListener('resize',measure);measure()})();
 </script>
